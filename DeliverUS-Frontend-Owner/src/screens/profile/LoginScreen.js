@@ -10,6 +10,7 @@ import logo from '../../../assets/logo.png'
 import TextError from '../../components/TextError'
 import { showMessage } from 'react-native-flash-message'
 
+//todo correcto
 export default function LoginScreen ({ navigation }) {
   const { signIn } = useContext(AuthorizationContext)
   const [backendErrors, setBackendErrors] = useState()
