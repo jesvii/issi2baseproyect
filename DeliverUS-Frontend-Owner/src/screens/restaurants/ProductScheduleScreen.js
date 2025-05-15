@@ -16,8 +16,12 @@ export default function ProductScheduleScreen() {
 
   const createSchedule = async () => {
     await ApiHelper.post("/schedules", {
-      startTime, endTime, restaurantId: currentRestaurant.id
+      startTime,
+      endTime,
+      restaurantId: currentRestaurant.id,
     });
+    setStartTime("");
+    setEndTime("");
     fetchSchedules();
   };
 
@@ -28,9 +32,9 @@ export default function ProductScheduleScreen() {
   return (
     <View>
       <Text>Horarios del Restaurante</Text>
-      <TextInput placeholder="Hora Inicio (HH:mm:ss)" onChangeText={setStartTime} value={startTime} />
-      <TextInput placeholder="Hora Fin (HH:mm:ss)" onChangeText={setEndTime} value={endTime} />
-      <Button title="Crear Horario" onPress={createSchedule} />
+      <TextInput placeholder="Inicio (HH:mm:ss)" value={startTime} onChangeText={setStartTime} />
+      <TextInput placeholder="Fin (HH:mm:ss)" value={endTime} onChangeText={setEndTime} />
+      <Button title="Crear horario" onPress={createSchedule} />
       <FlatList
         data={schedules}
         keyExtractor={(item) => item.id.toString()}
