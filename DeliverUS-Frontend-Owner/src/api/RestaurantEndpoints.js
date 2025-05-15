@@ -1,19 +1,19 @@
 import { get, post, put, destroy } from './helpers/ApiRequestsHelper'
 
 function getByRestaurant (restaurantId) {
-  return get(`schedules/restaurant/${restaurantId}`)
+  return get(`restaurants/${restaurantId}/schedules`)
 }
 
-function create (data) {
-  return post('schedules', data)
+function create (restaurantId, data) {
+  return post(`restaurants/${restaurantId}/schedules`, data)
 }
 
-function update (id, data) {
-  return put(`schedules/${id}`, data)
+function update (restaurantId, scheduleId, data) {
+  return put(`restaurants/${restaurantId}/schedules/${scheduleId}`, data)
 }
 
-function remove (id) {
-  return destroy(`schedules/${id}`)
+function remove (restaurantId, scheduleId) {
+  return destroy(`restaurants/${restaurantId}/schedules/${scheduleId}`)
 }
 
 export { getByRestaurant, create, update, remove }
