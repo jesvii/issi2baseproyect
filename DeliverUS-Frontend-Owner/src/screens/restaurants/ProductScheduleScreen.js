@@ -1,47 +1,60 @@
-import React, { useEffect, useState, useContext } from "react";
-import { View, Text, Button, TextInput, FlatList } from "react-native";
-import ApiHelper from "../../api/helpers/ApiRequestsHelper";
-import { AppContext } from "../../context/AppContext";
+import React, { useEffect, useState } from 'react'
+import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import { getRestaurantSchedules, removeSchedule } from '../../api/RestaurantEndpoints'
+import DeleteModal from '../../components/DeleteModal'
+import { useNavigation } from '@react-navigation/native'
 
-export default function ProductScheduleScreen() {
-  const { currentRestaurant } = useContext(AppContext);
-  const [schedules, setSchedules] = useState([]);
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-
-  const fetchSchedules = async () => {
-    const data = await ApiHelper.get(`/schedules/restaurant/${currentRestaurant.id}`);
-    setSchedules(data);
-  };
-
-  const createSchedule = async () => {
-    await ApiHelper.post("/schedules", {
-      startTime,
-      endTime,
-      restaurantId: currentRestaurant.id,
-    });
-    setStartTime("");
-    setEndTime("");
-    fetchSchedules();
-  };
+const RestaurantSchedulesScreen = ({ route }) => {
+  const { restaurantId } = route.params
+  const [schedules, setSchedules] = useState([])
+  const [modalVisible, setModalVisible] = useState(false)
+  const [selectedScheduleId, setSelectedScheduleId] = useState(null)
+  const navigation = useNavigation()
 
   useEffect(() => {
-    fetchSchedules();
-  }, []);
+    getRestaurantSchedules(restaurantId).then(setSchedules)
+  }, [])
+
+  const confirmDelete = id => {
+    setSelectedScheduleId(id)
+    setModalVisible(true)
+  }
+
+  const deleteSchedule = () => {
+    removeSchedule(restaurantId, selectedScheduleId).then(() => {
+      getRestaurantSchedules(restaurantId).then(setSchedules)
+      navigation.navigate('RestaurantDetailScreen', { restaurantId })
+    })
+    setModalVisible(false)
+  }
+
+  const renderItem = ({ item }) => (
+    <View style={{ padding: 10, borderBottomWidth: 1 }}>
+      <Text>{item.startTime} - {item.endTime}</Text>
+      <Text>{item.products.length} productos</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('EditScheduleScreen', { restaurantId, schedule: item })}>
+        <Text>Editar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => confirmDelete(item.id)}>
+        <Text>Eliminar</Text>
+      </TouchableOpacity>
+    </View>
+  )
 
   return (
     <View>
-      <Text>Horarios del Restaurante</Text>
-      <TextInput placeholder="Inicio (HH:mm:ss)" value={startTime} onChangeText={setStartTime} />
-      <TextInput placeholder="Fin (HH:mm:ss)" value={endTime} onChangeText={setEndTime} />
-      <Button title="Crear horario" onPress={createSchedule} />
       <FlatList
         data={schedules}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <Text>{item.startTime} - {item.endTime}</Text>
-        )}
+        renderItem={renderItem}
+        keyExtractor={item => item.id.toString()}
+      />
+      <DeleteModal
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        onConfirm={deleteSchedule}
       />
     </View>
-  );
+  )
 }
+
+export default RestaurantSchedulesScreen
