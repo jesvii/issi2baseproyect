@@ -1,5 +1,21 @@
 # DeliverUS - Simulation project
+Ejercicio 1 – Listado de productos con horarios (1,5 puntos)
+Archivo modificado: DeliverUS-Frontend-Owner/src/screens/restaurants/RestaurantDetailScreen.js
 
+Ejercicio 2 – Visualización de horarios y número de productos (2,5 puntos)
+Archivo modificado: DeliverUS-Frontend-Owner/src/screens/restaurants/RestaurantSchedulesScreen.js
+
+Ejercicio 3 – Borrado de horarios (1 punto)
+Archivo modificado: DeliverUS-Frontend-Owner/src/screens/restaurants/RestaurantSchedulesScreen.js
+
+Ejercicio 4 – Edición de horario (2,5 puntos)
+Archivo modificado: DeliverUS-Frontend-Owner/src/screens/restaurants/EditScheduleScreen.js
+
+Ejercicio 5 – Asignar o desasignar horario a producto (2,5 puntos)
+Archivo modificado: DeliverUS-Frontend-Owner/src/screens/restaurants/EditProductScreen.js
+
+Además, también has tenido que modificar el archivo:
+DeliverUS-Frontend-Owner/src/api/RestaurantEndpoints.js
 ## DeliverUS
 
 You can find DeliverUS documentation at: <https://github.com/IISSI2-IS-2025>
